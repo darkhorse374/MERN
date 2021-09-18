@@ -1,0 +1,12 @@
+mat-card {
+  margin: auto;
+}
+
+mat-form-field,
+textarea {
+  width: 100%;
+}
+
+.submit-button{
+  margin-top: 1rem;
+}
