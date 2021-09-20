@@ -23,6 +23,11 @@
   },
   "scripts": {
     "start:dev": "nodemon",
-    "start:prod": "node ./src/server.js"
+    "start:prod": "node ./src/server.js",
+    "build": "tsc",
+    "build:prod": "tsc -p tsconfig.prod.json",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   }
 }
