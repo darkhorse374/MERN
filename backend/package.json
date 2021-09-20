@@ -19,6 +19,7 @@
     "express": "^4.17.1"
   },
   "scripts": {
-    "start:dev": "nodemon server.js"
+    "start:dev": "nodemon",
+    "start:prod": "node ./src/server.js"
   }
 }
