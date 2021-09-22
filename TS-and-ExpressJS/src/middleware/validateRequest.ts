@@ -9,7 +9,7 @@ const validate = (schema: AnySchema) => async(
 ) => {
     try {
         await schema.validate({
-            bosy: req.body,
+            body: req.body,
             query: req.query,
             params: req.params
         });

@@ -1,7 +1,7 @@
 import { object, string, ref } from 'yup';
 
 export const createUserSchema = object({
-    bosy: object({
+    body: object({
         name: string().required('Name is required.'),
         password: string()
             .required('Password is required.')

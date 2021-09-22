@@ -1,7 +1,7 @@
 import { object, string, ref } from 'yup';
 
 export const createUserSessionSchema = object({
-  bosy: object({
+  body: object({
     password: string()
       .required('Password is required.')
       .min(6, 'Password is too short, should be at least 6 characters.')
