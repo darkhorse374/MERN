@@ -6,14 +6,12 @@ import { createUserSchema } from '@src/schema/user.schema';
 import { createUserSessionSchema } from '@src/schema/session.schema';
 
 export default function (app: Express) {
-    
-    // API to check application health
-    app.get('/health', (req: Request, res: Response) => res.sendStatus(200));
+  // API to check application health
+  app.get('/health', (req: Request, res: Response) => res.sendStatus(200));
 
-    // API to register a user
-    app.post('/api/users', validate(createUserSchema), createUserHandler);
+  // API to register a user
+  app.post('/api/users', validate(createUserSchema), createUserHandler);
 
-    // API for user login
-    app.post('/api/sessions', validate(createUserSessionSchema), createUserSessionHandler);
-
+  // API for user login
+  app.post('/api/sessions', validate(createUserSessionSchema), createUserSessionHandler);
 }
