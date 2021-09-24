@@ -3,12 +3,14 @@ import config from 'config';
 import log from '@src/logger/logger';
 import connect from '@src/db/connection';
 import routes from '@src/routes/routes';
+import deserializeUser from '@src/middleware/deserializeUser';
 
 const port = config.get('port') as number;
 const host = config.get('host') as string;
 
 const app = express();
 
+app.use(deserializeUser);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
