@@ -647,13 +647,6 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/bcrypt@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.npmjs.org/@types/bcrypt/-/bcrypt-5.0.0.tgz"
-  integrity sha512-agtcFKaruL8TmcvqbndlqHPSJgsolhf/qPWchFlgnW1gECTN/nKbFcoFnvKAQRFfKbh+BO6A3SWdJu9t+xF3Lw==
-  dependencies:
-    "@types/node" "*"
-
 "@types/bcryptjs@^2.4.2":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@types/bcryptjs/-/bcryptjs-2.4.2.tgz#e3530eac9dd136bfdfb0e43df2c4c5ce1f77dfae"

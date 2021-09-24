@@ -21,7 +21,6 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/body-parser": "^1.19.1",
     "@types/config": "^0.0.39",
@@ -60,6 +59,7 @@
     "start:dev": "nodemon",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "lint": "eslint \"./**\""
   }
 }
