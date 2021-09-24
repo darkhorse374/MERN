@@ -5,9 +5,16 @@ import {
   invalidateUserSessionHandler,
   getUserSessionsHandler,
 } from '@src/controller/session.controller';
+import {
+  createPostHandler,
+  getPostHandler,
+  updatePostHandler,
+  deletePostHandler,
+} from '@src/controller/post.controller';
 import validate from '@src/middleware/validateRequest';
 import createUserSchema from '@src/schema/user.schema';
 import createUserSessionSchema from '@src/schema/session.schema';
+import { createPostSchema, updatePostSchema, deletePostSchema } from '@src/schema/post.schema';
 import requiresUser from '@src/middleware/requiresUser';
 
 export default function (app: Express) {
@@ -25,4 +32,16 @@ export default function (app: Express) {
 
   // API to logout a user
   app.delete('/api/sessions', requiresUser, invalidateUserSessionHandler);
+
+  // Create a post
+  app.post('/api/posts', [requiresUser, validate(createPostSchema)], createPostHandler);
+
+  // Get a post
+  app.get('api/posts/:postId', getPostHandler);
+
+  // Update a post
+  app.put('/api/posts/:postId', [requiresUser, validate(updatePostSchema)], updatePostHandler);
+
+  // Delete a post
+  app.delete('/api/posts', [requiresUser, validate(deletePostSchema)], deletePostHandler);
 }
