@@ -1,9 +1,9 @@
+import { Express, Request, Response } from 'express';
 import createUserHandler from '@src/controller/user.controller';
 import createUserSessionHandler from '@src/controller/session.controller';
-import { Express, Request, Response } from 'express';
 import validate from '@src/middleware/validateRequest';
-import { createUserSchema } from '@src/schema/user.schema';
-import { createUserSessionSchema } from '@src/schema/session.schema';
+import createUserSchema from '@src/schema/user.schema';
+import createUserSessionSchema from '@src/schema/session.schema';
 
 export default function (app: Express) {
   // API to check application health

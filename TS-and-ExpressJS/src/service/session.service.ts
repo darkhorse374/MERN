@@ -1,9 +1,9 @@
-import UserSession, { SessionDocument } from '@src/model/session.model';
-import { UserDocument } from '@src/model/user.model';
-import { sign } from '@src/utils/jwt.utils';
 import { Omit } from 'lodash';
 import { LeanDocument } from 'mongoose';
 import config from 'config';
+import UserSession, { SessionDocument } from '@src/model/session.model';
+import { UserDocument } from '@src/model/user.model';
+import sign from '@src/utils/jwt.utils';
 
 export async function createUserSession(userId: string, userAgent: string) {
   const session = await UserSession.create({ user: userId, userAgent });
