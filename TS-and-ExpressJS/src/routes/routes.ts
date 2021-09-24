@@ -17,7 +17,7 @@ import createUserSessionSchema from '@src/schema/session.schema';
 import { createPostSchema, updatePostSchema, deletePostSchema } from '@src/schema/post.schema';
 import requiresUser from '@src/middleware/requiresUser';
 
-export default function (app: Express) {
+export default function routes(app: Express) {
   // API to check application health
   app.get('/health', (req: Request, res: Response) => res.sendStatus(200));
 
