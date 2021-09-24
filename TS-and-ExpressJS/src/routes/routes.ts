@@ -1,5 +1,5 @@
-import { createUserHandler } from '@src/controller/user.controller';
-import { createUserSessionHandler } from '@src/controller/session.controller';
+import createUserHandler from '@src/controller/user.controller';
+import createUserSessionHandler from '@src/controller/session.controller';
 import { Express, Request, Response } from 'express';
 import validate from '@src/middleware/validateRequest';
 import { createUserSchema } from '@src/schema/user.schema';

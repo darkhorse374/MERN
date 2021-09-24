@@ -6,7 +6,7 @@
   "author": "Goutham",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "config": "^3.3.6",
     "cors": "^2.8.5",
     "dayjs": "^1.10.7",

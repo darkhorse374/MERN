@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.listen(port, host, () => {
-    log.info(`Server running at http://${host}:${port}`);
-    connect();
-    routes(app);
+  log.info(`Server running at http://${host}:${port}`);
+  connect();
+  routes(app);
 });

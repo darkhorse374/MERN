@@ -1,6 +1,6 @@
-import { object, string, ref } from 'yup';
+import { object, string } from 'yup';
 
-export const createUserSessionSchema = object({
+const createUserSessionSchema = object({
   body: object({
     password: string()
       .required('Password is required.')
@@ -9,3 +9,5 @@ export const createUserSessionSchema = object({
     email: string().email('Must be a valid email').required('Email is required'),
   }),
 });
+
+export default createUserSessionSchema;
