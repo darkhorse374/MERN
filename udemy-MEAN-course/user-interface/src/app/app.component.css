@@ -1,4 +1,6 @@
 main {
   width: 80%;
   margin: 1rem auto;
+  background-color: black;
+  color: antiquewhite;
 }

@@ -18,7 +18,7 @@
       <textarea
         placeholder="Post Content"
         matInput
-        rows="6"
+        rows="4"
         name="postContent"
         ngModel
         required
@@ -26,8 +26,6 @@
       ></textarea>
       <mat-error *ngIf="postContent.invalid">Post Content is mandatory</mat-error>
     </mat-form-field>
-    <button class="submit-button" mat-raised-button color="primary" type="submit">
-      Save Post
-    </button>
+    <button class="submit-button" mat-raised-button color="primary" type="submit">Save Post</button>
   </form>
 </mat-card>
