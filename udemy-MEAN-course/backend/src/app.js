@@ -33,12 +33,15 @@ app.post('/api/posts', (req, res, next) => {
     title: req.body.title,
     content: req.body.content,
   });
-  post.save();
+  post.save().then(createdPost => {
+    console.log(`result :: ${createdPost}`);
+      res.status(201).json({
+        message: 'Post was successfuly saved',
+        postId: createdPost._id,
+      });
+  });
   // const post = req.body;
   // console.log(post);
-  res.status(201).json({
-    message: 'Post was successfuly saved',
-  });
 });
 
 app.get('/api/posts', (req, res, next) => {
@@ -58,6 +61,7 @@ app.get('/api/posts', (req, res, next) => {
 app.delete('/api/posts/:id', (req, res, next) => {
   Post.deleteOne({ _id: req.params.id })
     .then(() => {
+      console.log(`Post with ID ${req.params.id} was deleted`);
       res.status(200).json({
         message: 'Post deleted',
       });
