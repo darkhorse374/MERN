@@ -12,11 +12,14 @@ export class ListPostComponent implements OnInit, OnDestroy {
   // @Input() posts: Post[] = [];
   posts: Post[] = [];
   private subs = new SubSink();
+  isLoading = false;
 
   constructor(public postService: PostService) {
+    this.isLoading = true;
     this.postService.getPosts();
     this.subs.add(
       this.postService.getPostAddedListener().subscribe((posts: Post[]) => {
+        this.isLoading = false;
         this.posts = posts;
       })
     );
@@ -25,7 +28,9 @@ export class ListPostComponent implements OnInit, OnDestroy {
   ngOnInit(): void {}
 
   onDelete(postId: string) {
-    this.postService.deletePost(postId);
+    if (confirm(`Confirm to delete the post "${this.posts.find(p => p.id === postId).title}"`).valueOf()) {
+      this.postService.deletePost(postId);
+    }
   }
 
   ngOnDestroy() {

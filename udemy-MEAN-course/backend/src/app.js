@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const postsRoute = require('./routes/posts')
 
 mongoose
   .connect('mongodb://localhost:27017/udemy-MEAN-app')
@@ -11,7 +12,7 @@ mongoose
     console.error(`Connection to database failed :: ${err}`);
   });
 
-const Post = require('./models/post.model');
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -28,67 +29,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post('/api/posts', (req, res, next) => {
-  const post = new Post({
-    title: req.body.title,
-    content: req.body.content,
-  });
-  post.save().then(createdPost => {
-    console.log(`result :: ${createdPost}`);
-      res.status(201).json({
-        message: 'Post was successfuly saved',
-        postId: createdPost._id,
-      });
-  });
-  // const post = req.body;
-  // console.log(post);
-});
-
-app.get('/api/posts', (req, res, next) => {
-  Post.find()
-    .then(doc => {
-      console.log(doc);
-      res.status(200).json({
-        message: 'Post retrieved successfuly',
-        posts: doc,
-      });
-    })
-    .catch(err => {
-      console.error(`unable to fetch records :: ${err}`);
-    });
-});
-
-app.delete('/api/posts/:id', (req, res, next) => {
-  Post.deleteOne({ _id: req.params.id })
-    .then(() => {
-      console.log(`Post with ID ${req.params.id} was deleted`);
-      res.status(200).json({
-        message: 'Post deleted',
-      });
-    })
-    .catch(err => {
-      console.error(`unable to delete post with ID ${req.params.id} :: ${err}`);
-    });
-});
-
-app.use('/api/posts', (req, res, next) => {
-  const posts = [
-    {
-      id: 'f0afw3423',
-      title: 'Demo Post',
-      content: 'Demo post retrieved from backend',
-    },
-    {
-      id: 'f0afw8564',
-      title: 'Another Post',
-      content: 'Another demo post retrieved from backend',
-    },
-  ];
-  res.status(200).json({
-    message: 'Posts data',
-    posts: posts,
-  });
-  // res.send('Hello from express!');
-});
+app.use('/api/posts', postsRoute);
 
 module.exports = app;

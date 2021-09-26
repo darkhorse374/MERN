@@ -8,6 +8,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,12 +18,7 @@ import { HeaderComponent } from './header/header.component';
 import { ListPostComponent } from './posts/list-post/list-post.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CreatePostComponent,
-    HeaderComponent,
-    ListPostComponent
-  ],
+  declarations: [AppComponent, CreatePostComponent, HeaderComponent, ListPostComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -32,9 +29,11 @@ import { ListPostComponent } from './posts/list-post/list-post.component';
     MatButtonModule,
     MatToolbarModule,
     MatExpansionModule,
-    HttpClientModule
+    MatIconModule,
+    MatProgressSpinnerModule,
+    HttpClientModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

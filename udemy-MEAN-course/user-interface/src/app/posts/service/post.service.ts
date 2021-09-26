@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Post } from '@src/app/posts/post.model';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class PostService {
   private posts: Post[] = [];
   private postsUpdated = new Subject<Post[]>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -54,6 +55,7 @@ export class PostService {
         post.id = responseData.postId;
         this.posts.push(post);
         this.postsUpdated.next([...this.posts]);
+        this.redirectToHome();
       });
   }
 
@@ -65,5 +67,32 @@ export class PostService {
         console.log(`Post with ID ${postId} is successfully deleted`);
         this.postsUpdated.next([...this.posts]);
       });
+  }
+
+  getPost(id: string) {
+    // return { ...this.posts.find(p => p.id === id) };
+    return this.http.get<{ message: string, posts: { _id: string, title: string, content: string } }>('http://localhost:3000/api/posts/' + id, this.httpOptions);
+  }
+
+  updatePost(id: string, title: string, content: string) {
+    const post: Post = {
+      id: id,
+      title: title,
+      content: content
+    };
+    this.http.put('http://localhost:3000/api/posts/' + id, post, this.httpOptions).subscribe(
+      result => {
+        const updatedPosts = [...this.posts];
+        const oldPostIndex = updatedPosts.findIndex(p => p.id === post.id);
+        updatedPosts[oldPostIndex] = post;
+        this.posts = updatedPosts;
+        this.postsUpdated.next([...this.posts]);
+        this.redirectToHome();
+      }
+    )
+  }
+
+  redirectToHome() {
+    this.router.navigate(['/']);
   }
 }
