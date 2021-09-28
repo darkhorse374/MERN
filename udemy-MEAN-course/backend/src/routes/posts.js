@@ -1,17 +1,49 @@
 const express = require('express');
+const multer = require('multer');
 const Post = require('../models/post.model');
-const router = express.Router();
 
-router.post('', (req, res, next) => {
+const MIME_TYPE_MAP = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg'
+}
+
+const router = express.Router();
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error = new Error('Invalid FileType');
+
+    if (isValid)
+      error = null
+    
+    cb(error, './storage/images');
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname.toLowerCase().split(' ').join('_');
+    const ext = MIME_TYPE_MAP[file.mimetype];
+    cb(null, name + '-' + Date.now() + '.' + ext);
+  }
+});
+
+router.post('', multer({ storage: storage }).single('image'), (req, res, next) => {
+  const url = req.protocol + '://' + req.get('host');
   const post = new Post({
     title: req.body.title,
     content: req.body.content,
+    imagePath: url + '/images/' + req.file.filename,
   });
   post.save().then(createdPost => {
     console.log(`result :: ${createdPost}`);
     res.status(201).json({
       message: 'Post was successfuly saved',
-      postId: createdPost._id,
+      post: {
+        id: createdPost._id,
+        ...createdPost,
+        // title: createdPost.title,
+        // content: createdPost.content,
+        // imagePath: createdPost.imagePath
+      },
     });
   });
   // const post = req.body;

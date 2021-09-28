@@ -7,10 +7,21 @@ textarea {
   width: 100%;
 }
 
-.submit-button{
+.submit-button {
   margin-top: 1rem;
 }
 
-mat-spinner{
+mat-spinner {
   margin: auto;
+}
+
+input[type='file'] {
+  visibility: hidden;
+}
+
+img {
+  max-width: 450px;
+  max-height: 350px;
+  border: 5px solid black;
+  display: block; /* remove extra space below image */
 }

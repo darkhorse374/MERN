@@ -1,6 +1,6 @@
 <mat-card>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <form [formGroup]="postForm" (submit)="onSavePost()" *ngIf="!isLoading">
+  <form (submit)="onSavePost(postForm)" #postForm="ngForm" *ngIf="!isLoading">
     <h2 *ngIf="mode === 'create'">Create a new post</h2>
     <h2 *ngIf="mode === 'edit'">Edit the post</h2>
     <mat-form-field>
@@ -8,25 +8,29 @@
         placeholder="Post Title"
         matInput
         type="text"
-        formControlName="postTitle"
+        name="postTitle"
+        [ngModel]="post?.title"
+        required
+        minlength="5"
+        #postTitle="ngModel"
       />
-      <mat-error *ngIf="postForm.get('postTitle').invalid">Post Title is mandatory and minimum 5 characters</mat-error>
+      <mat-error *ngIf="postTitle.invalid">Post Title is mandatory and minimum 5 characters</mat-error>
     </mat-form-field>
     <div>
       <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
-      <input mat-stroked-button type="file" #filePicker (change)="onImageSelect($event)"/>
-    </div>
-    <div class="imapge-preview" *ngIf="imagePreview !== '' && imagePreview && postForm.get('postImage').valid">
-      <img [src]="imagePreview" [alt]="postForm.value.postTitle">
+      <input mat-stroked-button type="file" #filePicker/>
     </div>
     <mat-form-field>
       <textarea
         placeholder="Post Content"
         matInput
         rows="4"
-        formControlName="postContent"
+        name="postContent"
+        [ngModel]="post?.content"
+        required
+        #postContent="ngModel"
       ></textarea>
-      <mat-error *ngIf="postForm.get('postContent').invalid">Post Content is mandatory</mat-error>
+      <mat-error *ngIf="postContent.invalid">Post Content is mandatory</mat-error>
     </mat-form-field>
     <button class="submit-button" mat-raised-button color="primary" type="submit">Submit</button>
   </form>
