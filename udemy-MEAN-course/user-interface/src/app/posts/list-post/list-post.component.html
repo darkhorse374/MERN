@@ -4,6 +4,9 @@
     <mat-expansion-panel-header>
       {{ postData.title }}
     </mat-expansion-panel-header>
+    <div class="post-image">
+      <img [src]="postData.imagePath" [alt]="postData.title">
+    </div>
     <p>{{ postData.content }}</p>
     <mat-action-row>
       <button mat-button color="info" [routerLink]="['/editPost', postData.id]">EDIT</button>

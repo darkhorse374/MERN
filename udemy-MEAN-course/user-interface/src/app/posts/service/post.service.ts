@@ -32,6 +32,7 @@ export class PostService {
               title: post.title,
               content: post.content,
               id: post._id,
+              imagePath: post.imagePath,
             };
           });
         })
@@ -76,15 +77,18 @@ export class PostService {
 
   getPost(id: string) {
     // return { ...this.posts.find(p => p.id === id) };
-    return this.http.get<{ message: string, posts: { _id: string, title: string, content: string } }>('http://localhost:3000/api/posts/' + id, this.httpOptions);
+    return this.http.get<{
+      message: string;
+      posts: { _id: string; title: string; content: string; imagePath: string };
+    }>('http://localhost:3000/api/posts/' + id, this.httpOptions);
   }
 
-  updatePost(id: string, title: string, content: string) {
+  updatePost(id: string, title: string, content: string, imagePath: string) {
     const post: Post = {
       id: id,
       title: title,
       content: content,
-      imagePath: null
+      imagePath: imagePath,
     };
     this.http.put('http://localhost:3000/api/posts/' + id, post, this.httpOptions).subscribe(
       result => {

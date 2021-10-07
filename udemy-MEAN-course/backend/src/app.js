@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const postsRoute = require('./routes/posts')
+const path = require('path');
 
 mongoose
   .connect('mongodb://localhost:27017/udemy-MEAN-app')
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //     console.log('Server started');
 //     next();
 // });
+app.use("/images", express.static(path.join("storage/images")));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
