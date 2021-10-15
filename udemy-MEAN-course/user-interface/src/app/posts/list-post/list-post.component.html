@@ -1,11 +1,11 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
-<mat-accordion multi=true *ngIf="posts.length > 0 && !isLoading">
+<mat-accordion multi="true" *ngIf="posts.length > 0 && !isLoading">
   <mat-expansion-panel *ngFor="let postData of posts">
     <mat-expansion-panel-header>
       {{ postData.title }}
     </mat-expansion-panel-header>
     <div class="post-image">
-      <img [src]="postData.imagePath" [alt]="postData.title">
+      <img [src]="postData.imagePath" [alt]="postData.title" />
     </div>
     <p>{{ postData.content }}</p>
     <mat-action-row>
@@ -14,4 +14,11 @@
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
-<p class="info-text mat-body-1" *ngIf="posts.length <=0 && !isLoading">No posts are available to display!</p>
+<mat-paginator
+  [length]="totalPosts"
+  [pageSize]="postsPerPage"
+  [pageSizeOptions]="postsPerPageOptions"
+  (page)="onPageChange($event)"
+  *ngIf="posts.length > 0"
+></mat-paginator>
+<p class="info-text mat-body-1" *ngIf="posts.length <= 0 && !isLoading">No posts are available to display!</p>

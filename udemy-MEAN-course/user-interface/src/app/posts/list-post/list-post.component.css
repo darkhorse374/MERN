@@ -19,3 +19,7 @@ img {
   box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
   display: block; /* remove extra space below image */
 }
+
+mat-paginator{
+  margin-top: 1rem;
+}

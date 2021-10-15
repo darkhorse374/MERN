@@ -5,8 +5,8 @@ const Post = require('../models/post.model');
 const MIME_TYPE_MAP = {
   'image/png': 'png',
   'image/jpeg': 'jpg',
-  'image/jpg': 'jpg'
-}
+  'image/jpg': 'jpg',
+};
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -14,16 +14,15 @@ const storage = multer.diskStorage({
     const isValid = MIME_TYPE_MAP[file.mimetype];
     let error = new Error('Invalid FileType');
 
-    if (isValid)
-      error = null
-    
+    if (isValid) error = null;
+
     cb(error, './storage/images');
   },
   filename: (req, file, cb) => {
     const name = file.originalname.toLowerCase().split(' ').join('_');
     const ext = MIME_TYPE_MAP[file.mimetype];
     cb(null, name + '-' + Date.now() + '.' + ext);
-  }
+  },
 });
 
 router.post('', multer({ storage: storage }).single('image'), (req, res, next) => {
@@ -50,19 +49,32 @@ router.post('', multer({ storage: storage }).single('image'), (req, res, next) =
   // console.log(post);
 });
 
-router.get('', (req, res, next) => {
-  Post.find()
-    .then(doc => {
-      console.log(doc);
-      res.status(200).json({
-        message: 'Post retrieved successfuly',
-        posts: doc,
-      });
-    })
-    .catch(err => {
-      console.error(`unable to fetch records :: ${err}`);
-    });
-});
+router
+  .get('', (req, res, next) => {
+    const pageSize = +req.query.pageSize;
+    const currentPage = +req.query.page;
+    const postQuery = Post.find();
+    let fetchedPosts;
+    if (pageSize && currentPage) {
+      postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
+    }
+    postQuery
+      .then(doc => {
+        fetchedPosts = doc;
+        return Post.count();
+      })
+      .then(count => {
+        console.log(fetchedPosts);
+        res.status(200).json({
+          message: 'Post retrieved successfuly',
+          posts: fetchedPosts,
+          totalPosts: count,
+        });
+      })
+      .catch(err => {
+        console.error(`unable to fetch records :: ${err}`);
+      });;
+  });
 
 router.delete('/:id', (req, res, next) => {
   Post.deleteOne({ _id: req.params.id })
@@ -81,7 +93,7 @@ router.put('/:id', multer({ storage: storage }).single('image'), (req, res, next
   let imagePath = req.body.imagePath;
   if (req.file) {
     const url = req.protocol + '://' + req.get('host');
-    imagePath = url + '/images/' + req.file.filename
+    imagePath = url + '/images/' + req.file.filename;
   }
   const post = new Post({
     _id: req.body.id,
@@ -114,24 +126,24 @@ router.get('/:id', (req, res, next) => {
     });
 });
 
-router.use('', (req, res, next) => {
-  const posts = [
-    {
-      id: 'f0afw3423',
-      title: 'Demo Post',
-      content: 'Demo post retrieved from backend',
-    },
-    {
-      id: 'f0afw8564',
-      title: 'Another Post',
-      content: 'Another demo post retrieved from backend',
-    },
-  ];
-  res.status(200).json({
-    message: 'Posts data',
-    posts: posts,
-  });
-  // res.send('Hello from express!');
-});
+// router.use('', (req, res, next) => {
+//   const posts = [
+//     {
+//       id: 'f0afw3423',
+//       title: 'Demo Post',
+//       content: 'Demo post retrieved from backend',
+//     },
+//     {
+//       id: 'f0afw8564',
+//       title: 'Another Post',
+//       content: 'Another demo post retrieved from backend',
+//     },
+//   ];
+//   res.status(200).json({
+//     message: 'Posts data',
+//     posts: posts,
+//   });
+//   // res.send('Hello from express!');
+// });
 
 module.exports = router;
