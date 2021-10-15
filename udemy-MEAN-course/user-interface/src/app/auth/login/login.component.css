@@ -1,0 +1,18 @@
+mat-spinner {
+  margin: auto;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-card {
+  margin-top: 10%;
+  margin-left: 30%;
+  width: 40%;
+  align-content: center;
+}
+
+.txt{
+  text-align: center;
+}

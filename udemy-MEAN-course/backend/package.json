@@ -4,6 +4,7 @@
   "main": "server.js",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.6",
     "cors": "^2.8.5",
@@ -13,6 +14,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mongoose": "^6.0.7",
+    "mongoose-unique-validator": "^3.0.0",
     "multer": "^1.4.3",
     "nanoid": "^3.1.25",
     "pino": "^6.13.2",
