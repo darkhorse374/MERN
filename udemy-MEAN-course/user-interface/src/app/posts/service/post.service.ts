@@ -83,23 +83,36 @@ export class PostService {
     }>('http://localhost:3000/api/posts/' + id, this.httpOptions);
   }
 
-  updatePost(id: string, title: string, content: string, imagePath: string) {
-    const post: Post = {
-      id: id,
-      title: title,
-      content: content,
-      imagePath: imagePath,
-    };
-    this.http.put('http://localhost:3000/api/posts/' + id, post, this.httpOptions).subscribe(
-      result => {
-        const updatedPosts = [...this.posts];
-        const oldPostIndex = updatedPosts.findIndex(p => p.id === post.id);
-        updatedPosts[oldPostIndex] = post;
-        this.posts = updatedPosts;
-        this.postsUpdated.next([...this.posts]);
-        this.redirectToHome();
-      }
-    )
+  updatePost(id: string, title: string, content: string, image: File | string) {
+    let postData: Post | FormData;
+    if (typeof (image) === 'object') {
+      postData = new FormData();
+      postData.append('id', id)
+      postData.append('title', title);
+      postData.append('content', content);
+      postData.append('image', image, title);
+    } else {
+      postData = {
+        id: id,
+        title: title,
+        content: content,
+        imagePath: image as string,
+      };
+    }
+    this.http.put('http://localhost:3000/api/posts/' + id, postData, this.httpOptions).subscribe(result => {
+      const updatedPosts = [...this.posts];
+      const oldPostIndex = updatedPosts.findIndex(p => p.id === id);
+      const post: Post = {
+        id: id,
+        title: title,
+        content: content,
+        imagePath: ''//result.imagePath,
+      };
+      updatedPosts[oldPostIndex] = post;
+      this.posts = updatedPosts;
+      this.postsUpdated.next([...this.posts]);
+      this.redirectToHome();
+    });
   }
 
   redirectToHome() {
