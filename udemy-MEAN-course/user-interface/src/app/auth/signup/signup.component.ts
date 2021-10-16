@@ -12,6 +12,7 @@ export class SignupComponent {
   constructor(public authService: AuthService) {}
 
   onSignup(signupForm: NgForm) {
+    this.isLoading = true;
     this.authService.createUser(signupForm.value.email, signupForm.value.password);
   }
 }
