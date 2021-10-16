@@ -20,9 +20,11 @@ export class ListPostComponent implements OnInit, OnDestroy {
   currentPage = 1;
   postsPerPage = this.postsPerPageOptions[1];
   isUserAuthenticated = false;
+  userId: string;
 
   constructor(public postService: PostService, public authService: AuthService) {
     this.isLoading = true;
+    this.userId = this.authService.getUserId();
     this.postService.getPosts(this.postsPerPage, this.currentPage);
     this.subs.add(
       this.postService.getPostAddedListener().subscribe((postData: {posts: Post[], totalPosts: number}) => {
@@ -34,6 +36,7 @@ export class ListPostComponent implements OnInit, OnDestroy {
     this.isUserAuthenticated = this.authService.getIsUserAuthenticated();
     this.subs.add(this.authService.getAuthStatus().subscribe(isAuthenticated => {
       this.isUserAuthenticated = isAuthenticated;
+      this.userId = this.authService.getUserId();
     }));
   }
 

@@ -35,6 +35,7 @@ export class PostService {
                 content: post.content,
                 id: post._id,
                 imagePath: post.imagePath,
+                creator: post.creator,
               };
             }),
             totalPosts: postsData.totalPosts,
@@ -84,7 +85,7 @@ export class PostService {
     // return { ...this.posts.find(p => p.id === id) };
     return this.http.get<{
       message: string;
-      posts: { _id: string; title: string; content: string; imagePath: string };
+      posts: { _id: string; title: string; content: string; imagePath: string; creator: string };
     }>('http://localhost:3000/api/posts/' + id, this.httpOptions);
   }
 
@@ -102,6 +103,7 @@ export class PostService {
         title: title,
         content: content,
         imagePath: image as string,
+        creator: null,
       };
     }
     this.http.put('http://localhost:3000/api/posts/' + id, postData, this.httpOptions).subscribe(() => {

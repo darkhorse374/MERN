@@ -32,6 +32,7 @@ router.post('', checkAuth, multer({ storage: storage }).single('image'), (req, r
     title: req.body.title,
     content: req.body.content,
     imagePath: url + '/images/' + req.file.filename,
+    creator: req.userData.userId,
   });
   post.save().then(createdPost => {
     console.log(`result :: ${createdPost}`);
@@ -77,12 +78,18 @@ router.get('', (req, res, next) => {
 });
 
 router.delete('/:id', checkAuth, (req, res, next) => {
-  Post.deleteOne({ _id: req.params.id })
-    .then(() => {
-      console.log(`Post with ID ${req.params.id} was deleted`);
-      res.status(200).json({
-        message: 'Post deleted',
-      });
+  Post.deleteOne({ _id: req.params.id, creator: req.userData.userId })
+    .then(result => {
+      if (result.n > 0) {
+        console.log(`Post with ID ${req.params.id} was deleted`);
+        res.status(200).json({
+          message: 'Post deleted',
+        });
+      } else {
+        res.status(401).json({
+          message: `Not authorized to deleted the post with ID ${req.params.id}`,
+        });
+      }
     })
     .catch(err => {
       console.error(`unable to delete post with ID ${req.params.id} :: ${err}`);
@@ -100,10 +107,14 @@ router.put('/:id', checkAuth, multer({ storage: storage }).single('image'), (req
     title: req.body.title,
     content: req.body.content,
     imagePath: imagePath,
+    creator: req.userData.userId,
   });
-  Post.updateOne({ _id: req.params.id }, post).then(result => {
-    console.log(result);
-    res.status(200).json({ message: `Post with ID ${req.params.id} is updated successfully` });
+  Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post).then(result => {
+    if (result.nModified > 0) {
+      res.status(200).json({ message: `Post with ID ${req.params.id} is updated successfully` });
+    } else {
+      res.status(401).json({ message: `Not authorized to update the post with ID ${req.params.id}` });
+    }
   });
 });
 
@@ -111,6 +122,7 @@ router.get('/:id', (req, res, next) => {
   Post.findById(req.params.id)
     .then(doc => {
       if (doc) {
+        doc.creator = req.userData.userId;
         res.status(200).json({
           message: 'Post retrieved successfuly',
           posts: doc,
