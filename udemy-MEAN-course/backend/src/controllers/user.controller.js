@@ -1,10 +1,8 @@
-const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
-const router = express.Router();
 
-router.post('/signup', (req, res, next) => {
+exports.createUser = (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then(hashPassword => {
     const user = new User({
       email: req.body.email,
@@ -21,14 +19,14 @@ router.post('/signup', (req, res, next) => {
       .catch(err => {
         res.status(500).json({
           error: {
-            message: "Invalid authentication credentials!"
+            message: 'Invalid authentication credentials!',
           },
         });
       });
   });
-});
+};
 
-router.post('/login', (req, res, next) => {
+exports.loginUser = (req, res, next) => {
   let fetchedUser;
   User.findOne({
     email: req.body.email,
@@ -63,6 +61,4 @@ router.post('/login', (req, res, next) => {
         message: err.message,
       });
     });
-});
-
-module.exports = router;
+};
