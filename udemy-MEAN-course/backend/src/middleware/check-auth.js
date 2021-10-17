@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
     next();
   } catch (error) {
     res.status(401).json({
-      message: 'Authenticating the token failed',
+      error: { message: 'User authentication failed' },
     });
   }
 };

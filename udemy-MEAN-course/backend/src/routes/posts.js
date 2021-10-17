@@ -34,19 +34,28 @@ router.post('', checkAuth, multer({ storage: storage }).single('image'), (req, r
     imagePath: url + '/images/' + req.file.filename,
     creator: req.userData.userId,
   });
-  post.save().then(createdPost => {
-    console.log(`result :: ${createdPost}`);
-    res.status(201).json({
-      message: 'Post was successfuly saved',
-      post: {
-        id: createdPost._id,
-        ...createdPost,
-        // title: createdPost.title,
-        // content: createdPost.content,
-        // imagePath: createdPost.imagePath
-      },
+  post
+    .save()
+    .then(createdPost => {
+      console.log(`result :: ${createdPost}`);
+      res.status(201).json({
+        message: 'Post was successfuly saved',
+        post: {
+          id: createdPost._id,
+          ...createdPost,
+          // title: createdPost.title,
+          // content: createdPost.content,
+          // imagePath: createdPost.imagePath
+        },
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        error: {
+          message: 'Unable to create post\nPlease retry',
+        },
+      });
     });
-  });
   // const post = req.body;
   // console.log(post);
 });
@@ -74,6 +83,11 @@ router.get('', (req, res, next) => {
     })
     .catch(err => {
       console.error(`unable to fetch records :: ${err}`);
+      res.status(500).json({
+        error: {
+          message: 'Unable to fetch posts\nPlease retry',
+        },
+      });
     });
 });
 
@@ -87,12 +101,17 @@ router.delete('/:id', checkAuth, (req, res, next) => {
         });
       } else {
         res.status(401).json({
-          message: `Not authorized to deleted the post with ID ${req.params.id}`,
+          error: { message: 'Not authorized to delete post' },
         });
       }
     })
     .catch(err => {
       console.error(`unable to delete post with ID ${req.params.id} :: ${err}`);
+      res.status(500).json({
+        error: {
+          message: 'Unable to delete post\nPlease retry',
+        },
+      });
     });
 });
 
@@ -109,13 +128,21 @@ router.put('/:id', checkAuth, multer({ storage: storage }).single('image'), (req
     imagePath: imagePath,
     creator: req.userData.userId,
   });
-  Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post).then(result => {
-    if (result.nModified > 0) {
-      res.status(200).json({ message: `Post with ID ${req.params.id} is updated successfully` });
-    } else {
-      res.status(401).json({ message: `Not authorized to update the post with ID ${req.params.id}` });
-    }
-  });
+  Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post)
+    .then(result => {
+      if (result.nModified > 0) {
+        res.status(200).json({ message: `Post with ID ${req.params.id} is updated successfully` });
+      } else {
+        res.status(401).json({ error: { message: 'Not authorized to update the post' } });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({
+        error: {
+          message: 'Unable to update post\nPlease retry',
+        },
+      });
+    });
 });
 
 router.get('/:id', (req, res, next) => {
@@ -129,12 +156,17 @@ router.get('/:id', (req, res, next) => {
         });
       } else {
         res.status(404).json({
-          message: 'Post not found',
+          error: { message: 'Post not found' },
         });
       }
     })
     .catch(err => {
       console.error(`unable to fetch records :: ${err}`);
+      res.status(500).json({
+        error: {
+          message: 'Unable to fetch post\nPlease retry',
+        },
+      });
     });
 });
 

@@ -1,17 +1,19 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 // import { Post } from '@src/app/posts/post.model';
 import { PostService } from '@src/app/posts/service/post.service';
 import { Post } from '@src/app/posts/post.model';
 import { mimeType } from '@src/app/posts/create-post/mime-type.validator';
+import { AuthService } from '@src/app/auth/service/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-post',
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.css'],
 })
-export class CreatePostComponent implements OnInit {
+export class CreatePostComponent implements OnInit, OnDestroy {
   // @Output() postCreated = new EventEmitter<Post>();
   mode = 'create';
   private postId = '';
@@ -19,14 +21,18 @@ export class CreatePostComponent implements OnInit {
   isLoading = false;
   postForm: FormGroup;
   imagePreview: string;
+  authSub: Subscription;
 
-  constructor(public postService: PostService, public route: ActivatedRoute) {}
+  constructor(public postService: PostService, public route: ActivatedRoute, private authService: AuthService) {}
 
   ngOnInit(): void {
+    this.authSub = this.authService.getAuthStatus().subscribe(() => {
+      this.isLoading = false;
+    });
     this.postForm = new FormGroup({
       postTitle: new FormControl(null, { validators: [Validators.required, Validators.minLength(4)] }),
       postContent: new FormControl(null, { validators: [Validators.required] }),
-      postImage: new FormControl(null, { validators: [Validators.required], asyncValidators: [mimeType] })
+      postImage: new FormControl(null, { validators: [Validators.required], asyncValidators: [mimeType] }),
     });
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -63,7 +69,11 @@ export class CreatePostComponent implements OnInit {
 
     this.isLoading = true;
     if (this.mode === 'create') {
-      this.postService.addPost(this.postForm.value.postTitle, this.postForm.value.postContent, this.postForm.value.postImage);
+      this.postService.addPost(
+        this.postForm.value.postTitle,
+        this.postForm.value.postContent,
+        this.postForm.value.postImage
+      );
     } else {
       this.postService.updatePost(
         this.postId,
@@ -92,5 +102,9 @@ export class CreatePostComponent implements OnInit {
       this.imagePreview = reader.result as string;
     };
     reader.readAsDataURL(file);
+  }
+
+  ngOnDestroy(): void {
+    this.authSub.unsubscribe();
   }
 }
