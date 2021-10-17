@@ -4,9 +4,12 @@ const mongoose = require('mongoose');
 const postsRoutes = require('./routes/posts.route')
 const userRoutes = require('./routes/users.route');
 const path = require('path');
+const dotenv = require('dotenv-safe');
+
+dotenv.config({ path: './.env' });
 
 mongoose
-  .connect('mongodb://localhost:27017/udemy-MEAN-app')
+  .connect(process.env.MONGO_URL)
   .then(() => {
     console.log('Connected to database');
   })

@@ -8,10 +8,10 @@
       <a mat-stroked-button routerLink="/createPost" routerLinkActive="mat-warn">New Post</a>
     </li>
     <li *ngIf="!isUserAuthenticated">
-      <a mat-stroked-button routerLink="/login" routerLinkActive="mat-warn">Login</a>
+      <a mat-stroked-button routerLink="/auth/login" routerLinkActive="mat-warn">Login</a>
     </li>
     <li *ngIf="!isUserAuthenticated">
-      <a mat-stroked-button routerLink="/signup" routerLinkActive="mat-warn">Signup</a>
+      <a mat-stroked-button routerLink="/auth/signup" routerLinkActive="mat-warn">Signup</a>
     </li>
     <li *ngIf="isUserAuthenticated">
       <a mat-stroked-button (click)="onLogout()">Logout</a>

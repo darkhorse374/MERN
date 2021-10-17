@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Post } from '@src/app/posts/post.model';
+import { Post } from '@src/app/modules/posts/models/post.model';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { environment } from '@src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostService {
+  private apiURL = environment.baseURL + '/posts/';
   private posts: Post[] = [];
-  private postsUpdated = new Subject<{posts: Post[], totalPosts: number}>();
+  private postsUpdated = new Subject<{ posts: Post[]; totalPosts: number }>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -25,7 +27,7 @@ export class PostService {
     console.log('In getPosts() from post.service.ts');
     const queryParams = `?pageSize=${pageSize}&page=${currentPage}`;
     this.http
-      .get<{ message: string; posts: any, totalPosts: number }>('http://localhost:3000/api/posts' + queryParams, this.httpOptions)
+      .get<{ message: string; posts: any; totalPosts: number }>(this.apiURL + queryParams, this.httpOptions)
       .pipe(
         map(postsData => {
           return {
@@ -44,7 +46,7 @@ export class PostService {
       )
       .subscribe(transformedPosts => {
         this.posts = transformedPosts.posts;
-        this.postsUpdated.next({ posts: [...this.posts], totalPosts: transformedPosts .totalPosts});
+        this.postsUpdated.next({ posts: [...this.posts], totalPosts: transformedPosts.totalPosts });
       });
   }
 
@@ -59,7 +61,7 @@ export class PostService {
     postData.append('content', postContent);
     postData.append('image', image, postTitle);
     this.http
-      .post<{ message: string; post: Post }>('http://localhost:3000/api/posts', postData)
+      .post<{ message: string; post: Post }>(this.apiURL, postData)
       // .subscribe(responseData => {
       .subscribe(() => {
         // const post: Post = { id: responseData.post.id, title: postTitle, content: postContent, imagePath: responseData.post.imagePath };
@@ -72,13 +74,13 @@ export class PostService {
   }
 
   deletePost(postId: string) {
-    return this.http.delete('http://localhost:3000/api/posts/' + postId, this.httpOptions);
-      // .subscribe(() => {
-      //   const updatedPosts = this.posts.filter(post => post.id !== postId);
-      //   this.posts = updatedPosts;
-      //   console.log(`Post with ID ${postId} is successfully deleted`);
-      //   this.postsUpdated.next([...this.posts]);
-      // });
+    return this.http.delete(this.apiURL + postId, this.httpOptions);
+    // .subscribe(() => {
+    //   const updatedPosts = this.posts.filter(post => post.id !== postId);
+    //   this.posts = updatedPosts;
+    //   console.log(`Post with ID ${postId} is successfully deleted`);
+    //   this.postsUpdated.next([...this.posts]);
+    // });
   }
 
   getPost(id: string) {
@@ -86,14 +88,14 @@ export class PostService {
     return this.http.get<{
       message: string;
       posts: { _id: string; title: string; content: string; imagePath: string; creator: string };
-    }>('http://localhost:3000/api/posts/' + id, this.httpOptions);
+    }>(this.apiURL + id, this.httpOptions);
   }
 
   updatePost(id: string, title: string, content: string, image: File | string) {
     let postData: Post | FormData;
-    if (typeof (image) === 'object') {
+    if (typeof image === 'object') {
       postData = new FormData();
-      postData.append('id', id)
+      postData.append('id', id);
       postData.append('title', title);
       postData.append('content', content);
       postData.append('image', image, title);
@@ -106,7 +108,7 @@ export class PostService {
         creator: null,
       };
     }
-    this.http.put('http://localhost:3000/api/posts/' + id, postData, this.httpOptions).subscribe(() => {
+    this.http.put(this.apiURL + id, postData, this.httpOptions).subscribe(() => {
       // result => {
       // const updatedPosts = [...this.posts];
       // const oldPostIndex = updatedPosts.findIndex(p => p.id === id);

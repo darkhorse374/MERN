@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SubSink } from 'subsink';
-import { AuthService } from '../auth/service/auth.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-header',

@@ -1,16 +1,10 @@
 {
-    "watch": [
-        "src"
-    ],
-    "ext": "ts,js,json",
-    "ignore": [
-        "node_modules",
-        "coverage",
-        "dist"
-    ],
-    "exec": "node ./src/server.js",
-    "restartable": "rs",
-    "env": {
-        "NODE_ENV": "development"
-    }
+  "watch": ["src"],
+  "ext": "ts,js,json",
+  "ignore": ["node_modules", "coverage", "dist"],
+  "exec": "node ./src/server.js",
+  "restartable": "rs",
+  "env": {
+    "NODE_ENV": "development"
+  }
 }

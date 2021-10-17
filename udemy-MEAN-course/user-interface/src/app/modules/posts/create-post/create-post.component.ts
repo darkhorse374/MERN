@@ -2,10 +2,10 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 // import { Post } from '@src/app/posts/post.model';
-import { PostService } from '@src/app/posts/service/post.service';
-import { Post } from '@src/app/posts/post.model';
-import { mimeType } from '@src/app/posts/create-post/mime-type.validator';
-import { AuthService } from '@src/app/auth/service/auth.service';
+import { PostService } from '@src/app/services/post.service';
+import { Post } from '@src/app/modules/posts/models/post.model';
+import { mimeType } from '@src/app/modules/posts/create-post/mime-type.validator';
+import { AuthService } from '@src/app/services/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
