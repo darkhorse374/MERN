@@ -17,7 +17,7 @@
     "mongoose": "^6.0.7",
     "nanoid": "^3.1.25",
     "pino": "^6.13.2",
-    "pino-pretty": "^7.0.1",
+    "pino-pretty": "^7.5.1",
     "yup": "^0.32.9"
   },
   "devDependencies": {
