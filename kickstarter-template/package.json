@@ -39,18 +39,18 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
-    "config": "^3.3.6",
+    "config": "^3.3.7",
     "cors": "^2.8.5",
     "dayjs": "^1.10.7",
     "dotenv-safe": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mongoose": "^6.0.7",
     "nanoid": "^3.1.25",
-    "pino": "^6.13.3",
-    "pino-pretty": "^7.0.1",
-    "yup": "^0.32.9"
+    "yup": "^0.32.11"
+    "pino": "^6.13.4",
+    "pino-pretty": "^7.5.1",
   },
   "scripts": {
     "build": "tsc",
