@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http/http';
 import { Post } from '@src/app/modules/posts/models/post.model';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from '@src/environments/environment';
+import validator from 'validator';
 
 @Injectable({
   providedIn: 'root',
@@ -57,6 +58,8 @@ export class PostService {
   addPost(postTitle: string, postContent: string, image: File) {
     // const post: Post = { id: '', title: postTitle, content: postContent };
     const postData = new FormData();
+    postTitle = validator.escape(postTitle);
+    postContent = validator.escape(postContent);
     postData.append('title', postTitle);
     postData.append('content', postContent);
     postData.append('image', image, postTitle);

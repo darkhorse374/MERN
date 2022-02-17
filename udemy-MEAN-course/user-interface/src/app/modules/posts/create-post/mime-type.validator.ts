@@ -1,8 +1,10 @@
-import { AbstractControl } from "@angular/forms";
-import { Observable, Observer, of } from "rxjs";
+import { AbstractControl } from '@angular/forms';
+import { Observable, Observer, of } from 'rxjs';
 
-export const mimeType = (control: AbstractControl): Promise<{ [key: string]: any }> | Observable<{ [key: string]: any }> => {
-  if (typeof (control.value) === 'string') {
+export const mimeType = (
+  control: AbstractControl
+): Promise<{ [key: string]: any }> | Observable<{ [key: string]: any }> => {
+  if (typeof control.value === 'string') {
     return of(null);
   }
   const file = control.value as File;
@@ -17,8 +19,6 @@ export const mimeType = (control: AbstractControl): Promise<{ [key: string]: any
       }
       switch (header) {
         case '89504e47':
-          isValid = true;
-          break;
         case 'ffd8ffe0':
         case 'ffd8ffe1':
         case 'ffd8ffe2':
