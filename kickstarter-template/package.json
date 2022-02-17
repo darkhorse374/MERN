@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
-    "config": "^3.3.6",
+    "config": "^3.3.7",
     "cors": "^2.8.5",
     "dayjs": "^1.10.7",
     "dotenv-safe": "^8.2.0",
